@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width", initial-scale="1.0">
+    <title>New Order #{{ transaction.id }} - Perfect Cushion Store</title>
+    <style media="screen">
+      table{
+        width: 60%;
+        margin: 0 auto;
+        border-collapse: collapse;
+      }
+      table tr td{
+        border: 1px solid #c1c1c1;
+      }
+      p{
+        padding-right: 50px;
+        padding-left: 50px;
+      }
+    </style>
+  </head>
+  <body>
+    <center>
+      <h1>Thanks for shopping with us</h1>
+      <p>This email is to confirm that your order was placed on the Perfect Cushion Store.<br> Please take a moment to review the details.</p>
+    </center>
+    <br>
+    <table>
+      <tr>
+        <td valign='top' colspan="2" style="width:50%">
+          <b>Bill to:</b><br>
+          {{ transaction.billingName }}
+          {{ transaction.billingAddress1 }}
+          {{ transaction.billingCity }}
+          {{ transaction.billingPostCode }}
+          {{ transaction.billingCountry }}
+        </td>
+        <td valign='top' colspan="2" style="width:50%">
+          <b>Order: </b>#{{ transaction.id }}<br>
+          <b>Date: </b>{{ transaction.created|date:"d M Y" }}<br>
+        </td>
+      </tr>
+      <tr>
+        <td><b>Product Description</b></td>
+        <td><b>Quantity</b></td>
+        <td><b>Unit Price</b></td>
+        <td><b>Sub Total</b></td>
+      </tr>
+      {% for item in order_items %}
+      <tr>
+        <td><b>{{ item.product }}</b></td>
+        <td><b>{{ item.quantity }}</b></td>
+        <td><b>{{ item.price }}</b></td>
+        <td><b>{{ item.sub_total }}</b></td>
+      </tr>
+      {% endfor %}
+      <tr>
+        <td colspan="3" style="text-align: right;"><b>Total</b></td>
+        <td>{{ transaction.total }}</td>
+      </tr>
+      <tr>
+        <td colspan="3" style="text-align: right;"><b>Total Paid</b></td>
+        <td>{{ transaction.total }}</td>
+      </tr>
+      <tr>
+        <td valign='top' colspan="2" style="width:50%">
+          <b>Ship to:</b><br>
+          {{ transaction.shippingName }}
+          {{ transaction.shippingAddress1 }}
+          {{ transaction.shippingCity }}
+          {{ transaction.shippingPostCode }}
+          {{ transaction.shippingCountry }}
+        </td>
+        <td valign='top' colspan="2" style="width:50%">
+          <b>Payment Details: </b><br>
+          ${{ transaction.total }} was paid succesfully via Stripe.
+        </td>
+      </tr>
+    </table>
+    <center>
+      <br>
+      <b>If you are a registered costumer and want to check your order history, please <a href="{% url 'signin'%}">Sign In</a>. Otherwise you may want to create an account <a href="{% url 'signup'%}"></a></b>
+    </center>
+  </body>
+</html>
